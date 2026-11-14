@@ -1,0 +1,62 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Painel geral</p>
+      <h1>Controle de estoque em tempo real</h1>
+    </div>
+    <a class="btn primary" href="{% url 'produto_create' %}">Adicionar produto</a>
+  </section>
+
+  <section class="cards">
+    <div class="card">
+      <p>Produtos ativos</p>
+      <strong>{{ total_produtos }}</strong>
+    </div>
+    <div class="card">
+      <p>Categorias</p>
+      <strong>{{ total_categorias }}</strong>
+    </div>
+    <div class="card warning">
+      <p>Produtos ativos com estoque baixo</p>
+      <strong>{{ estoque_baixo }}</strong>
+    </div>
+    <div class="card success">
+      <p>Valor estimado do estoque (inclui inativos)</p>
+      <strong>R$ {{ valor_total }}</strong>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Produtos ativos com maior quantidade em estoque</h2>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Categoria</th>
+          <th>Estoque</th>
+          <th>Preço</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for produto in produtos_em_alta %}
+          <tr>
+            <td>{{ produto.nome }}</td>
+            <td>{{ produto.categoria }}</td>
+            <td>{{ produto.quantidade_estoque }}</td>
+            <td>R$ {{ produto.preco }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4">Nenhum produto cadastrado.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

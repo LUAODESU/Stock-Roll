@@ -1,0 +1,52 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Produtos{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header split">
+      <h1>Produtos</h1>
+      <div class="header-actions">
+        <form method="get" class="search-form">
+          <input type="text" name="q" value="{{ query }}" placeholder="Buscar por nome ou SKU" />
+          <button type="submit" class="btn secondary">Buscar</button>
+        </form>
+        <a class="btn primary" href="{% url 'produto_create' %}">Novo Produto</a>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>SKU</th>
+          <th>Categoria</th>
+          <th>Fornecedor</th>
+          <th>Preço</th>
+          <th>Estoque</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for produto in produtos %}
+          <tr>
+            <td><a href="{% url 'produto_detail' produto.pk %}">{{ produto.nome }}</a></td>
+            <td>{{ produto.sku }}</td>
+            <td>{{ produto.categoria }}</td>
+            <td>{{ produto.fornecedor|default:'—' }}</td>
+            <td>R$ {{ produto.preco }}</td>
+            <td>{{ produto.quantidade_estoque }}</td>
+            <td class="actions">
+              <a href="{% url 'produto_update' produto.pk %}">Editar</a>
+              <a href="{% url 'produto_delete' produto.pk %}" class="danger">Excluir</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7">Nenhum produto encontrado.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

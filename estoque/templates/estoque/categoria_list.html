@@ -1,0 +1,40 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Categorias{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header split">
+      <h1>Categorias</h1>
+      <a class="btn primary" href="{% url 'categoria_create' %}">Nova categoria</a>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>Produtos</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for categoria in categorias %}
+          <tr>
+            <td>{{ categoria.nome }}</td>
+            <td>{{ categoria.descricao|default:'—' }}</td>
+            <td>{{ categoria.total_produtos }}</td>
+            <td class="actions">
+              <a href="{% url 'categoria_update' categoria.pk %}">Editar</a>
+              <a href="{% url 'categoria_delete' categoria.pk %}" class="danger">Excluir</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4">Nenhuma categoria cadastrada.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

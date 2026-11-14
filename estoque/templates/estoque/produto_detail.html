@@ -1,0 +1,60 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Detalhes do produto{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-header split">
+      <h1>{{ produto.nome }}</h1>
+      <div class="header-actions">
+        <a class="btn secondary" href="{% url 'produto_update' produto.pk %}">Editar</a>
+        <a class="btn danger" href="{% url 'produto_delete' produto.pk %}">Excluir</a>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div>
+        <p><strong>SKU:</strong> {{ produto.sku }}</p>
+        <p><strong>Categoria:</strong> {{ produto.categoria }}</p>
+        <p><strong>Fornecedor:</strong> {{ produto.fornecedor|default:'Não informado' }}</p>
+        <p><strong>Preço:</strong> R$ {{ produto.preco }}</p>
+        <p><strong>Em estoque:</strong> {{ produto.quantidade_estoque }}</p>
+      </div>
+      <div>
+        <p><strong>Ativo:</strong> {% if produto.ativo %}Sim{% else %}Não{% endif %}</p>
+        <p><strong>Cadastro:</strong> {{ produto.data_cadastro|date:'d/m/Y' }}</p>
+        <p><strong>Descrição:</strong> {{ produto.descricao|default:'Sem descrição' }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Últimas movimentações</h2>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Quantidade</th>
+          <th>Data</th>
+          <th>Observação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for movimentacao in movimentacoes %}
+          <tr>
+            <td>{{ movimentacao.get_tipo_display }}</td>
+            <td>{{ movimentacao.quantidade }}</td>
+            <td>{{ movimentacao.data|date:'d/m/Y H:i' }}</td>
+            <td>{{ movimentacao.observacao|default:'Sem observação' }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4">Nenhuma movimentação registrada.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}
